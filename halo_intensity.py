@@ -20,20 +20,20 @@ RGB_image = raw_image.convert('RGB')
 image_contr_obj = ImageEnhance.Contrast(RGB_image) #Contrast class instance
 RGB_image_e = image_contr_obj.enhance(3)
 data = np.array(RGB_image)
-data_e = np.array(RGB_image_e )
+data_e = np.array(RGB_image_e)
 plt.imsave('enhanced.jpg',data_e)
 
-# #edge detection
-# image_e = 
+#edge detection
+image_e = Image.open('enhanced.jpg')
 
 
-# data_max = filters.maximum_filter(data,1)
-# data_min = filters.minimum_filter(data,5)
-# maxima = (data_max == data)
-# diff = ((data_max-data_min)>15)
-# maxima[diff==0] = 0
-# plt.imshow(maxima, cmap='gray', vmin=0,vmax=0.1)
-# plt.imsave('maxima.jpg', maxima)
+data_max = filters.maximum_filter(data,1)
+data_min = filters.minimum_filter(data,5)
+maxima = (data_max == data)
+diff = ((data_max-data_min)>15)
+maxima[diff==0] = 0
+plt.imshow(maxima, cmap='gray', vmin=0,vmax=0.1)
+plt.imsave('maxima.jpg', maxima)
 
 
 # img = cv.imread()
