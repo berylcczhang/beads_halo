@@ -14,7 +14,7 @@ import cv2 as cv
 from PIL import Image,ImageEnhance
 import scipy.ndimage.filters as filters
 
-#increase the contrast of the original image and save it
+#enhanced method: increase the contrast of the original image and save it
 raw_image = Image.open('Tube5_1.tif')
 RGB_image = raw_image.convert('RGB')
 image_contr_obj = ImageEnhance.Contrast(RGB_image) #Contrast class instance
@@ -36,21 +36,21 @@ def get_maxima(max_nbsize, min_nbsize, threshold):
     plt.imsave('maxima.jpg', maxima)
 
 #edge detect for enhanced method
-
 img = cv.imread('enhanced.jpg',0)
-img = cv.medianBlur(img,5)
-cimg = cv.cvtColor(img,cv.COLOR_GRAY2BGR)
-circles = cv.HoughCircles(img,cv.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=0)
-circles = circles = np.uint16(np.around(circles))
-
-for i in circles[0,:]:
-    # draw the outer circle
-    cv.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
-    # draw the center of the circle
-    cv.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
-
-plt.imshow(cimg)
-
+def halo_contour(img, lowthre, highthre, minR, maxR, mindist):
+    img = cv.medianBlur(img,5)
+    cimg = cv.cvtColor(img,cv.COLOR_GRAY2BGR)
+    circles = cv.HoughCircles(img,cv.HOUGH_GRADIENT, 1, mindist, param1=highthre, param2=lowthre, minRadius=minR, maxRadius=maxR)
+    circles = np.uint16(np.around(circles))
+    cimg = cv.cvtColor(img,cv.COLOR_GRAY2BGR)
+    for i in circles[0,:]:
+        # draw the outer circle
+        cv.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+        # draw the center of the circle
+        cv.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
+    plt.imshow(cimg)
+    
+    
 # # edge detect for filter method
 
 # img = cv.imread('maxima.jpg',0)
