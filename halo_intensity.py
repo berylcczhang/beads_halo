@@ -33,29 +33,38 @@ def get_maxima(max_nbsize, min_nbsize, threshold):
     diff = ((data_max-data_min)>threshold)
     maxima[diff==0] = 0
     plt.imshow(maxima, cmap='gray', vmin=0,vmax=0.1)
-    #plt.imsave('maxima.jpg', maxima)
+    plt.imsave('maxima.jpg', maxima)
 
+#edge detect for enhanced method
 
+img = cv.imread('enhanced.jpg',0)
+img = cv.medianBlur(img,5)
+cimg = cv.cvtColor(img,cv.COLOR_GRAY2BGR)
+circles = cv.HoughCircles(img,cv.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=0)
+circles = circles = np.uint16(np.around(circles))
 
-# img = cv.imread()
+for i in circles[0,:]:
+    # draw the outer circle
+    cv.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+    # draw the center of the circle
+    cv.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
 
+plt.imshow(cimg)
 
+# # edge detect for filter method
 
+# img = cv.imread('maxima.jpg',0)
+# # img = cv.medianBlur(img,5)
+# edge = cv.Canny(img,170,200)
+# cimg = cv.cvtColor(img,cv.COLOR_GRAY2BGR)
+# circles = cv.HoughCircles(img,cv.HOUGH_GRADIENT,1,20,param1=50,param2=30,minRadius=0,maxRadius=0)
+# circles = circles = np.uint16(np.around(circles))
 
-# maxima = cv.imread('maxima.jpg')
-# output = maxima.copy()
-# img = cv.cvtColor(maxima, cv.COLOR_BGR2GRAY)
-# # Find circles
-# circles = cv.HoughCircles(img, cv.HOUGH_GRADIENT, 1.3, 100)
-# # If some circle is found
-# if circles is not None:
-#     # Get the (x, y, r) as integers
-#     circles = np.round(circles[0, :]).astype("int")
-#     print(circles)
-#     # loop over the circles
-#     for (x, y, r) in circles:
-#       cv.circle(output, (x, y), r, (0, 255, 0), 2)
-# # show the output image
-# cv.imshow("circle",output)
+# for i in circles[0,:]:
+#     # draw the outer circle
+#     cv.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
+#     # draw the center of the circle
+#     cv.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
 
-# # Find circle
+# plt.imshow(cimg)
+
