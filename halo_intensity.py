@@ -14,26 +14,27 @@ import cv2 as cv
 from PIL import Image,ImageEnhance
 import scipy.ndimage.filters as filters
 
-#increase the contrast of tthe original image and save it
+#increase the contrast of the original image and save it
 raw_image = Image.open('Tube5_1.tif')
 RGB_image = raw_image.convert('RGB')
 image_contr_obj = ImageEnhance.Contrast(RGB_image) #Contrast class instance
 RGB_image_e = image_contr_obj.enhance(3)
-data = np.array(RGB_image)
-data_e = np.array(RGB_image_e)
-plt.imsave('enhanced.jpg',data_e)
-
-#edge detection
-image_e = Image.open('enhanced.jpg')
+RGB_data_e = np.array(RGB_image_e)
+plt.imsave('enhanced.jpg',RGB_data_e)
 
 
-data_max = filters.maximum_filter(data,1)
-data_min = filters.minimum_filter(data,5)
-maxima = (data_max == data)
-diff = ((data_max-data_min)>15)
-maxima[diff==0] = 0
-plt.imshow(maxima, cmap='gray', vmin=0,vmax=0.1)
-plt.imsave('maxima.jpg', maxima)
+
+#filter method 
+def get_maxima(max_nbsize, min_nbsize, threshold):
+    data = np.array(raw_image)
+    data_max = filters.maximum_filter(data,max_nbsize)
+    data_min = filters.minimum_filter(data,min_nbsize)
+    maxima = (data_max == data)
+    diff = ((data_max-data_min)>threshold)
+    maxima[diff==0] = 0
+    plt.imshow(maxima, cmap='gray', vmin=0,vmax=0.1)
+    #plt.imsave('maxima.jpg', maxima)
+
 
 
 # img = cv.imread()
