@@ -16,6 +16,7 @@ import scipy.ndimage.filters as filters
 
 #enhanced method: increase the contrast of the original image and save it
 raw_image = Image.open('Tube5_1.tif')
+data = np.array(raw_image)
 RGB_image = raw_image.convert('RGB')
 image_contr_obj = ImageEnhance.Contrast(RGB_image) #Contrast class instance
 RGB_image_e = image_contr_obj.enhance(3)
